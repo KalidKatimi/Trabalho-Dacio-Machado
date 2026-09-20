@@ -1,18 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
+#define MAX_LEADS 50 
+
 int main() {
+    char nomes[MAX_LEADS][50]; 
+    int origens[MAX_LEADS]; 
+    
+    int totalLeads = 0; 
     int opcao = 0;
     
-    // O esqueleto do sistema - Mantém o software rodando até o usuário pedir para sair
     do {
         printf("\n========================================\n");
         printf("       GERADOR E GESTOR DE LEADS        \n");
         printf("========================================\n");
+        printf("Leads na base: %d / %d\n\n", totalLeads, MAX_LEADS); 
         printf("1. Cadastrar novo Lead\n");
         printf("2. Listar todos os Leads\n");
-        printf("3. Relatorio de Temperatura\n");
-        printf("4. Sair do Sistema\n");
+        printf("3. Relatorio de Dados\n");
+        printf("4. Buscar Lead por Nome\n");
+        printf("5. Sair do Sistema\n");
         printf("========================================\n");
         printf("Escolha uma opcao: ");
         
@@ -20,22 +28,130 @@ int main() {
         
         switch(opcao) {
             case 1:
-                printf("\n[ LOG ] Modulo de cadastro sera implementado no Commit 03.\n");
+                if(totalLeads < MAX_LEADS) {
+                    printf("\n--- CADASTRAR LEAD ---\n");
+                    printf("Digite o nome do lead: ");
+                    
+                    setbuf(stdin, NULL); 
+                    fgets(nomes[totalLeads], 50, stdin);
+                    
+                    int j = 0;
+                    while (nomes[totalLeads][j] != '\0') {
+                        if (nomes[totalLeads][j] == '\n') {
+                            nomes[totalLeads][j] = '\0'; 
+                            break; 
+                        }
+                        j++;
+                    }
+                    
+                    printf("Qual a origem? (1-Discord / 2-Automacao / 3-Outro): ");
+                    scanf("%d", &origens[totalLeads]);
+                    
+                    totalLeads++; 
+                    printf("\n[ SUCESSO ] Lead cadastrado com sucesso!\n");
+                } else {
+                    printf("\n[ ERRO ] Memoria cheia! Limite de %d atingido.\n", MAX_LEADS);
+                }
                 break;
+                
             case 2:
-                printf("\n[ LOG ] Listagem da base sera implementada no Commit 04.\n");
+                printf("\n--- LISTA DE LEADS CADASTRADOS ---\n");
+                if(totalLeads == 0) {
+                    printf("Nenhum lead na base ainda.\n");
+                } else {
+                    for(int i = 0; i < totalLeads; i++) {
+                        printf("ID: %d | Nome: %s | Origem: ", i + 1, nomes[i]);
+                        if(origens[i] == 1) printf("Discord\n");
+                        else if(origens[i] == 2) printf("Automacao\n");
+                        else printf("Outro\n");
+                    }
+                }
                 break;
+                
             case 3:
-                printf("\n[ LOG ] Relatorio de dados sera implementado no Commit 05.\n");
+                printf("\n--- RELATORIO DE ORIGENS ---\n");
+                if(totalLeads == 0) {
+                    printf("Cadastre leads para gerar o relatorio.\n");
+                } else {
+                    int qtdDiscord = 0, qtdAutomacao = 0, qtdOutros = 0;
+                    
+                    for(int i = 0; i < totalLeads; i++) {
+                        if(origens[i] == 1) qtdDiscord++;
+                        else if(origens[i] == 2) qtdAutomacao++;
+                        else qtdOutros++;
+                    }
+                    
+                    printf("Total processado: %d leads\n", totalLeads);
+                    printf("- Via Discord: %d\n", qtdDiscord);
+                    printf("- Via Automacao n8n: %d\n", qtdAutomacao);
+                    printf("- Outras origens: %d\n", qtdOutros);
+                }
                 break;
+                
             case 4:
+                printf("\n--- BUSCA DE LEAD ---\n");
+                if(totalLeads == 0) {
+                    printf("A base de leads esta vazia.\n");
+                } else {
+                    char termoBusca[50];
+                    printf("Digite o nome exato para buscar: ");
+                    
+                    setbuf(stdin, NULL);
+                    fgets(termoBusca, 50, stdin);
+                    
+                 
+                    int k = 0;
+                    while (termoBusca[k] != '\0') {
+                        if (termoBusca[k] == '\n') {
+                            termoBusca[k] = '\0';
+                            break;
+                        }
+                        k++;
+                    }
+                    
+                    int encontrou = 0;
+                    
+                    
+                    for(int i = 0; i < totalLeads; i++) {
+                        int iguais = 1; 
+                        int c = 0;
+                        
+                        
+                        while(nomes[i][c] != '\0' || termoBusca[c] != '\0') {
+                            if(nomes[i][c] != termoBusca[c]) {
+                                iguais = 0; 
+                                break;
+                            }
+                            c++;
+                        }
+                        
+                        if(iguais == 1) {
+                            printf("\n[ LEAD ENCONTRADO ]\n");
+                            printf("Nome: %s | Origem: ", nomes[i]);
+                            if(origens[i] == 1) printf("Discord\n");
+                            else if(origens[i] == 2) printf("Automacao\n");
+                            else printf("Outro\n");
+                            
+                            encontrou = 1;
+                            break; 
+                        }
+                    }
+                    
+                    if(encontrou == 0) {
+                        printf("\n[ AVISO ] Lead nao encontrado na base.\n");
+                    }
+                }
+                break;
+                
+            case 5:
                 printf("\nEncerrando o sistema base... Ate logo!\n");
                 break;
+                
             default:
-                printf("\n[ ERRO ] Opcao invalida. Digite de 1 a 4.\n");
+                printf("\n[ ERRO ] Opcao invalida. Digite de 1 a 5.\n");
         }
         
-    } while (opcao != 4);
+    } while (opcao != 5);
 
     return 0;
 }
