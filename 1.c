@@ -1,51 +1,42 @@
 // leads.h
-#define MAX_LEADS 50
+typedef struct {
+    int id;
+    char nome[50];
+    int origem;
+    int temperatura;
+} Lead;
 
 void cadastrarLead();
 void listarLeads();
 void buscarLead();
-Ficheiro 2: Cria o main.c e cola isto:
 
 C
 // main.c
 #include <stdio.h>
 #include <stdlib.h>
-#include "leads.h" 
+#include <string.h>
+#include "leads.h"
 
-int main() {
-    int opcao = 0;
+void cadastrarLead() {
+    Lead novoLead;
+    FILE *arquivo;
+    printf("\n--- CADASTRAR LEAD ---\n");
+    arquivo = fopen("dados_leads.txt", "a");
+    if (arquivo == NULL) { 
+        printf("[ ERRO ] Nao foi possivel criar ou abrir o ficheiro!\n"); 
+        return; 
+    }
+    printf("ID: "); scanf("%d", &novoLead.id);
+    printf("Nome: "); scanf(" %[^\n]s", novoLead.nome);
+    printf("Origem (1/2/3): "); scanf("%d", &novoLead.origem);
+    printf("Temp (1/2/3): "); scanf("%d", &novoLead.temperatura);
     
-    do {
-        printf("\n========================================\n");
-        printf("       SISTEMA CRM (ARQUIVOS MULTIPLOS)   \n");
-        printf("========================================\n");
-        printf("1. Cadastrar novo Lead\n");
-        printf("2. Listar Leads (Ler do Arquivo)\n");
-        printf("3. Buscar Lead por Nome\n");
-        printf("4. Sair do Sistema\n");
-        printf("========================================\n");
-        printf("Escolha uma opcao: ");
-        
-        scanf("%d", &opcao);
-        
-        switch(opcao) {
-            case 1:
-                cadastrarLead();
-                break;
-            case 2:
-                listarLeads();
-                break;
-            case 3:
-                buscarLead();
-                break;
-            case 4:
-                printf("\nEncerrando o programa e fechando conexoes... Ate logo!\n");
-                break;
-            default:
-                printf("\n[ ERRO ] Opcao invalida.\n");
-        }
-        
-    } while (opcao != 4);
+    fprintf(arquivo, "%d;%s;%d;%d\n", novoLead.id, novoLead.nome, novoLead.origem, novoLead.temperatura);
+    fclose(arquivo);
+    printf("\n[ SUCESSO ] Lead guardado no ficheiro!\n");
+}
 
+void listarLeads() {}
+void buscarLead() {}
     return 0;
 }
