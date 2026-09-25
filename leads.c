@@ -23,5 +23,49 @@ void cadastrarLead() {
     printf("\n[ SUCESSO ] Lead guardado no ficheiro!\n");
 }
 
-void listarLeads() {}
-void buscarLead() {}
+void listarLeads() {
+    Lead leadAtual;
+    FILE *arquivo;
+    printf("\n--- LISTA DE LEADS ---\n");
+    arquivo = fopen("dados_leads.txt", "r");
+    if (arquivo == NULL) { 
+        printf("[ AVISO ] O ficheiro esta vazio.\n"); 
+        return; 
+    }
+    while (fscanf(arquivo, "%d;%[^;];%d;%d\n", &leadAtual.id, leadAtual.nome, &leadAtual.origem, &leadAtual.temperatura) != EOF) {
+        printf("ID: %d | Nome: %s | Orig: %d | Temp: %d\n", leadAtual.id, leadAtual.nome, leadAtual.origem, leadAtual.temperatura);
+    }
+    fclose(arquivo);
+}
+
+void buscarLead() {
+    Lead leadAtual;
+    FILE *arquivo;
+    char termoBusca[50];
+    int encontrou = 0;
+    
+    printf("\n--- BUSCAR LEAD ---\n");
+    printf("Digite o nome exato para buscar: ");
+    scanf(" %[^\n]s", termoBusca);
+    
+    arquivo = fopen("dados_leads.txt", "r");
+    if (arquivo == NULL) { 
+        printf("[ ERRO ] Base de dados indisponivel.\n"); 
+        return; 
+    }
+    
+    while (fscanf(arquivo, "%d;%[^;];%d;%d\n", &leadAtual.id, leadAtual.nome, &leadAtual.origem, &leadAtual.temperatura) != EOF) {
+        if (strcmp(leadAtual.nome, termoBusca) == 0) {
+            printf("\n[ ENCONTRADO ] ID: %d | Nome: %s\n", leadAtual.id, leadAtual.nome);
+            encontrou = 1; 
+            break; 
+        }
+    }
+    
+    // Tratamento de erro obrigatorio caso nao encontre resultados
+    if (encontrou == 0) {
+        printf("\n[ AVISO ] A busca nao retornou resultados. Lead nao encontrado.\n");
+    }
+    
+    fclose(arquivo);
+}
