@@ -4,6 +4,7 @@
 
 #define MAX_LEADS 50
 
+// Estrutura heterogênea para os dados do Lead
 typedef struct {
     int id;
     char nome[50];
@@ -17,22 +18,27 @@ void cadastrarLead() {
     
     system("cls");
     printf("\n--- CADASTRAR LEAD ---\n");
+    
+    // Abre o ficheiro em modo de adição ("a") para preservar os dados antigos
     arquivo = fopen("dados_leads.txt", "a");
     if (arquivo == NULL) { 
         printf("[ ERRO ] Nao foi possivel criar ou abrir o ficheiro!\n"); 
         return; 
     }
+    
     printf("ID: "); scanf("%d", &novoLead.id);
     printf("Nome: "); scanf(" %[^\n]s", novoLead.nome);
     printf("Origem (1/2/3): "); scanf("%d", &novoLead.origem);
     printf("Temp (1/2/3): "); scanf("%d", &novoLead.temperatura);
     
+    // Grava no ficheiro separado por ponto e vírgula
     fprintf(arquivo, "%d;%s;%d;%d\n", novoLead.id, novoLead.nome, novoLead.origem, novoLead.temperatura);
     fclose(arquivo);
     
     printf("\n[ SUCESSO ] Lead guardado no ficheiro!\n");
     printf("\nPressione Enter para voltar ao menu...");
-    scanf(" %[^\n]");
+    getchar();
+    getchar();
 }
 
 void listarLeads() {
@@ -41,20 +47,25 @@ void listarLeads() {
     
     system("cls");
     printf("\n--- LISTA DE LEADS ---\n");
+    
     arquivo = fopen("dados_leads.txt", "r");
     if (arquivo == NULL) { 
         printf("[ AVISO ] O ficheiro esta vazio.\n"); 
         printf("\nPressione Enter para voltar ao menu...");
-        scanf(" %[^\n]");
+        getchar();
+        getchar();
         return; 
     }
+    
+    // Lê linha a linha até ao final do ficheiro (EOF)
     while (fscanf(arquivo, "%d;%[^;];%d;%d\n", &leadAtual.id, leadAtual.nome, &leadAtual.origem, &leadAtual.temperatura) != EOF) {
         printf("ID: %d | Nome: %s | Orig: %d | Temp: %d\n", leadAtual.id, leadAtual.nome, leadAtual.origem, leadAtual.temperatura);
     }
     fclose(arquivo);
     
     printf("\nPressione Enter para voltar ao menu...");
-    scanf(" %[^\n]");
+    getchar();
+    getchar();
 }
 
 void buscarLead() {
@@ -72,10 +83,12 @@ void buscarLead() {
     if (arquivo == NULL) { 
         printf("[ ERRO ] Base de dados indisponivel.\n"); 
         printf("\nPressione Enter para voltar ao menu...");
-        scanf(" %[^\n]");
+        getchar();
+        getchar();
         return; 
     }
     
+    // Compara o nome de cada registo com o termo de busca
     while (fscanf(arquivo, "%d;%[^;];%d;%d\n", &leadAtual.id, leadAtual.nome, &leadAtual.origem, &leadAtual.temperatura) != EOF) {
         if (strcmp(leadAtual.nome, termoBusca) == 0) {
             printf("\n[ ENCONTRADO ] ID: %d | Nome: %s\n", leadAtual.id, leadAtual.nome);
@@ -84,17 +97,21 @@ void buscarLead() {
         }
     }
     
+    // Aviso obrigatório caso a busca não retorne resultados
     if (encontrou == 0) {
         printf("\n[ AVISO ] A busca nao retornou resultados. Lead nao encontrado.\n");
     }
     
     fclose(arquivo);
     printf("\nPressione Enter para voltar ao menu...");
-    scanf(" %[^\n]");
+    getchar();
+    getchar();
 }
 
 int main() {
     int opcao = 0;
+    
+    // Ciclo principal do menu interativo
     do {
         system("cls");
         printf("\n========================================\n");
@@ -119,8 +136,10 @@ int main() {
             default: 
                 printf("\n[ ERRO ] Opcao invalida.\n");
                 printf("Pressione Enter para continuar...");
-                scanf(" %[^\n]");
+                getchar();
+                getchar();
         }
     } while (opcao != 4);
+    
     return 0;
 }
