@@ -1,17 +1,4 @@
-// leads.h
-typedef struct {
-    int id;
-    char nome[50];
-    int origem;
-    int temperatura;
-} Lead;
-
-void cadastrarLead();
-void listarLeads();
-void buscarLead();
-
-C
-// main.c
+// leads.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -38,5 +25,3 @@ void cadastrarLead() {
 
 void listarLeads() {}
 void buscarLead() {}
-    return 0;
-}
