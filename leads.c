@@ -1,4 +1,3 @@
-// leads.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,7 +24,8 @@ void cadastrarLead() {
     
     printf("\n[ SUCESSO ] Lead guardado no ficheiro!\n");
     printf("\nPressione Enter para voltar ao menu...");
-    scanf(" %[^\n]");
+    getchar();
+    getchar();
 }
 
 void listarLeads() {
@@ -38,7 +38,8 @@ void listarLeads() {
     if (arquivo == NULL) { 
         printf("[ AVISO ] O ficheiro esta vazio.\n"); 
         printf("\nPressione Enter para voltar ao menu...");
-        scanf(" %[^\n]");
+        getchar();
+        getchar();
         return; 
     }
     while (fscanf(arquivo, "%d;%[^;];%d;%d\n", &leadAtual.id, leadAtual.nome, &leadAtual.origem, &leadAtual.temperatura) != EOF) {
@@ -47,7 +48,8 @@ void listarLeads() {
     fclose(arquivo);
     
     printf("\nPressione Enter para voltar ao menu...");
-    scanf(" %[^\n]");
+    getchar();
+    getchar();
 }
 
 void buscarLead() {
@@ -65,7 +67,8 @@ void buscarLead() {
     if (arquivo == NULL) { 
         printf("[ ERRO ] Base de dados indisponivel.\n"); 
         printf("\nPressione Enter para voltar ao menu...");
-        scanf(" %[^\n]");
+        getchar();
+        getchar();
         return; 
     }
     
@@ -83,5 +86,6 @@ void buscarLead() {
     
     fclose(arquivo);
     printf("\nPressione Enter para voltar ao menu...");
-    scanf(" %[^\n]");
+    getchar();
+    getchar();
 }
