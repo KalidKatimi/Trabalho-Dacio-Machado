@@ -7,7 +7,7 @@ int main() {
     int opcao = 0;
     do {
         printf("\n========================================\n");
-        printf("       SISTEMA CRM (ARQUIVOS MULTIPLOS)   \n");
+        printf("       GERADOR DE LEADS (CRM)             \n");
         printf("========================================\n");
         printf("1. Cadastrar novo Lead\n");
         printf("2. Listar Leads (Ler do Ficheiro)\n");
