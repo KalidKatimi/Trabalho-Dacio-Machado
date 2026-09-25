@@ -6,6 +6,7 @@
 int main() {
     int opcao = 0;
     do {
+        system("cls");
         printf("\n========================================\n");
         printf("       GERADOR DE LEADS (CRM)             \n");
         printf("========================================\n");
@@ -21,8 +22,14 @@ int main() {
             case 1: cadastrarLead(); break;
             case 2: listarLeads(); break;
             case 3: buscarLead(); break;
-            case 4: printf("\nEncerrando...\n"); break;
-            default: printf("\n[ ERRO ] Opcao invalida.\n");
+            case 4: 
+                system("cls");
+                printf("\nEncerrando o programa... Até logo!\n"); 
+                break;
+            default: 
+                printf("\n[ ERRO ] Opcao invalida.\n");
+                printf("Pressione Enter para continuar...");
+                scanf(" %[^\n]");
         }
     } while (opcao != 4);
     return 0;
