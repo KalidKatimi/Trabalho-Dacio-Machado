@@ -1,4 +1,5 @@
-// main.c
+//main.c
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "leads.h"
@@ -29,7 +30,8 @@ int main() {
             default: 
                 printf("\n[ ERRO ] Opcao invalida.\n");
                 printf("Pressione Enter para continuar...");
-                scanf(" %[^\n]");
+                getchar();
+                getchar();
         }
     } while (opcao != 4);
     return 0;
