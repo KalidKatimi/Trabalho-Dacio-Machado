@@ -1,41 +1,108 @@
 # Gerador de Leads (CRM) em C
 
-Programa de console para Windows com cadastro, listagem, busca por nome e persistência em arquivo texto.
+Programa de console para Windows que permite cadastrar, listar e buscar leads, mantendo os dados salvos em arquivo texto.
 
-## Abrir no Dev-C++
+## Funcionalidades
 
-1. Baixe o repositório em **Code → Download ZIP** e extraia todos os arquivos.
-2. Abra **CRM_pronto.dev** no Dev-C++.
-3. Pressione **F11 — Compilar e Executar**.
+- Cadastro de leads com ID, nome, origem e temperatura.
+- Listagem dos registros salvos.
+- Busca pelo nome exato.
+- Validação de entradas e prevenção de IDs duplicados.
+- Persistência dos dados após fechar o programa.
+- Limpeza da tela com `system("cls")`.
 
-## Compilar com GCC
+## Arquivos do projeto
+
+| Arquivo | Função |
+| --- | --- |
+| `main.c` | Menu principal e chamada das operações. |
+| `leads.c` | Cadastro, listagem, busca, validação e armazenamento. |
+| `leads.h` | Estrutura `Lead`, constantes e declarações das funções. |
+
+O arquivo `programa.c`, caso esteja no repositório, é uma versão anterior e **não deve ser incluído na compilação desta versão**.
+
+## Como executar no Dev-C++
+
+1. Baixe o repositório em **Code → Download ZIP**.
+2. Extraia o ZIP para uma pasta.
+3. No Dev-C++, acesse **Arquivo → Novo → Projeto**.
+4. Escolha **Console Application**, selecione a linguagem **C** e salve o projeto na pasta dos arquivos.
+5. Remova do projeto o arquivo de exemplo criado automaticamente, sem apagar o `main.c` baixado.
+6. Em **Projeto → Adicionar ao projeto**, selecione `main.c`, `leads.c` e `leads.h`.
+7. Pressione **F11 — Compilar e Executar**.
+
+## Como compilar com GCC
+
+Na pasta dos arquivos, execute:
 
 ```sh
 gcc -std=c99 -Wall -Wextra -Wpedantic main.c leads.c -o crm.exe
 ```
 
-Execute `crm.exe` na pasta do projeto. A limpeza de tela usa `system("cls")`, específico do Windows.
+Depois, no PowerShell:
 
-## Estrutura
+```powershell
+.\crm.exe
+```
 
-- `main.c`: menu e seleção das operações.
-- `leads.c`: cadastro, listagem, busca, validação e leitura/gravação.
-- `leads.h`: estrutura `Lead`, constantes e declarações compartilhadas.
+Compile somente `main.c` e `leads.c`. O cabeçalho `leads.h` é incluído pelo próprio código.
 
-## Uso e regras
+## Como usar
 
-1. Cadastrar lead.
-2. Listar leads.
-3. Buscar pelo nome exato (distingue maiúsculas de minúsculas).
-4. Encerrar.
+| Opção | Operação |
+| --- | --- |
+| **1** | Cadastrar um novo lead. |
+| **2** | Listar os leads salvos. |
+| **3** | Buscar pelo nome exato. |
+| **4** | Encerrar o programa. |
 
-ID positivo e único; origem e temperatura entre 1 e 3; até 50 leads. Nome obrigatório de até 49 bytes, sem ponto e vírgula ou caracteres de controle. Resultados permanecem visíveis até pressionar Enter.
+Após cada operação, pressione **Enter** para voltar ao menu.
 
-Os dados são salvos em `dados_leads.txt` na pasta de execução, no formato `id;nome;origem;temperatura`. O arquivo é criado no primeiro cadastro. Faça backup da sua base. Registros inválidos são informados na leitura e bloqueiam novos cadastros até sua correção.
+## Regras de cadastro
 
-## Validação realizada
+- O ID deve ser positivo e não pode se repetir.
+- Origem e temperatura aceitam valores de **1 a 3**.
+- O nome é obrigatório e pode ocupar até **49 bytes**.
+- O nome não pode conter ponto e vírgula (`;`) ou caracteres de controle.
+- O limite é de **50 leads**.
+- A busca diferencia letras maiúsculas de minúsculas e mostra todos os registros com o nome informado.
 
-A lógica corrigida passou em 63 cenários automatizados no Windows, incluindo persistência entre execuções, entradas inválidas, registros corrompidos, duplicidade, limite de cadastros e falhas de acesso. Após adicionar a limpeza de tela, a versão foi recompilada sem erros ou avisos. Cadastro, listagem, busca e persistência também foram conferidos pelo usuário.
+## Armazenamento
 
-Não possui edição, exclusão ou suporte a gravações simultâneas por várias instâncias.
+Os dados ficam em `dados_leads.txt`, criado na pasta de execução ao salvar o primeiro cadastro.
 
+Cada linha segue este formato:
+
+```text
+id;nome;origem;temperatura
+```
+
+Exemplo:
+
+```text
+1;Ana Silva;2;3
+```
+
+Os registros permanecem salvos após encerrar e reabrir o programa. Faça uma cópia de segurança antes de modificar o arquivo manualmente.
+
+Registros inválidos são informados durante a leitura. Novos cadastros ficam bloqueados até que esses registros sejam corrigidos.
+
+## Testes realizados
+
+A lógica corrigida passou por **63 cenários automatizados**, incluindo:
+
+- Cadastro, listagem e busca.
+- Persistência entre execuções.
+- Entradas inválidas e nomes muito longos.
+- IDs duplicados e limite de cadastros.
+- Arquivos ausentes, vazios ou com registros corrompidos.
+- Falhas de acesso e gravação.
+
+Após adicionar `system("cls")`, a versão foi recompilada sem erros ou avisos. Cadastro, listagem, busca e persistência também foram conferidos manualmente.
+
+## Limitações
+
+- A limpeza de tela com `cls` é específica do Windows.
+- Não há edição ou exclusão de leads.
+- A busca exige o nome exato.
+- Não foi projetado para várias instâncias gravarem na mesma base simultaneamente.
