@@ -11,11 +11,9 @@ typedef struct {
     int temperatura;
 } Lead;
 
+int lerNumero(const char *mensagem, int minimo, int maximo);
 void cadastrarLead(void);
 void listarLeads(void);
 void buscarLead(void);
-int lerInteiro(const char *mensagem, int minimo, int maximo, int *valor);
-void pausar(void);
 
 #endif
-
